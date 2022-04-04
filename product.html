@@ -878,7 +878,7 @@
                             <div class="card-header row">
                                 <h3 class="card-title col-11">Quản lý sản phẩm</h3>
                                 <button class="btn btn-primary col-1" data-target="#create-product" data-toggle="modal"
-                                        type="button">
+                                        type="button" onclick="drawCategory()">
                                     Tạo mới
                                 </button>
                             </div>
@@ -892,6 +892,7 @@
                                         <th>Giá sản phẩm</th>
                                         <th>Mô tả sản phẩm</th>
                                         <th>Ảnh sản phẩm</th>
+                                        <th>Danh mục sản phẩm</th>
                                         <th colspan="2"></th>
                                     </tr>
                                     </thead>
@@ -916,7 +917,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Tạo mới sản phẩm</h4>
+                    <h4 class="modal-title" id="create-product-title">Tạo mới sản phẩm</h4>
                     <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -938,8 +939,12 @@
                         <label for="image">Ảnh sản phẩm</label>
                         <input class="form-control" id="image" placeholder="Nhập ảnh sản phẩm" type="text">
                     </div>
+                    <div class="form-group">
+                        <label for="category">Danh mục sản phẩm</label>
+                        <select class="form-control" id="category"></select>
+                    </div>
                 </div>
-                <div class="modal-footer justify-content-between">
+                <div class="modal-footer justify-content-between" id="create-product-footer">
                     <button class="btn btn-secondary" data-dismiss="modal" type="button">Đóng</button>
                     <button class="btn btn-primary" onclick="createNewProduct()" type="button">Tạo mới</button>
                 </div>
