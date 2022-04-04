@@ -27,25 +27,21 @@ function createNewProduct() {
     let name = $('#name').val();
     let price = $('#price').val();
     let description = $('#description').val();
-    let image = $('#image').val();
+    let image = $('#image');
     let category = $('#category').val();
-    let product = {
-        name: name,
-        price: price,
-        description: description,
-        image: image,
-        category: {
-            id: category
-        }
-    }
+    let product = new FormData();
+    product.append('name',name);
+    product.append('price', price);
+    product.append('description', description);
+    product.append('category', category);
+    product.append('image',image.prop('files')[0]);
     $.ajax({
         type: 'POST',
         url: 'http://localhost:8080/products',
-        data: JSON.stringify(product),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+        data: product,
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
         success: function () {
             getAllProduct();
             showSuccessMessage('Tạo thành công!');
