@@ -1,9 +1,11 @@
 function register() {
     let username = $('#username').val();
     let password = $('#password').val();
+    let confirmPassword = $('#confirm-password').val();
     let user = {
         username: username,
-        password: password
+        password: password,
+        confirmPassword: confirmPassword
     }
     $.ajax({
         type: 'POST',
@@ -15,6 +17,9 @@ function register() {
         },
         success: function () {
             location.href = '/demo-m4-c11G1/pages/auth/login.html';
+        },
+        error: function () {
+            showErrorMessage('Xảy ra lỗi!')
         }
     })
 }
