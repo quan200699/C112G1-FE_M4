@@ -10,7 +10,7 @@ function getAllProduct() {
         <td>${products[i].name}</td>
         <td>${products[i].price}</td>
         <td>${products[i].description}</td>
-        <td><img src="http://localhost:8080/image/${products[i].image}"></td>
+        <td><img src="http://localhost:8080/${products[i].image}"></td>
         <td>${products[i].category == null ? '' : products[i].category.name}</td>
         <td><button class="btn btn-primary"><i class="fa fa-edit" data-target="#create-product" data-toggle="modal"
                                         type="button" onclick="showEditProduct(${products[i].id})"></i></button></td>
