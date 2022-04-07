@@ -1,7 +1,12 @@
+let currentUser = localStorage.getItem('currentUser');
+currentUser = JSON.parse(currentUser);// ep chuoi ve doi tuong
 function getAllProduct() {
     $.ajax({
+        url: `http://localhost:8080/products`,
         type: 'GET',
-        url: 'http://localhost:8080/products',
+        headers: {
+            'Authorization': 'Bearer ' + currentUser.token
+        },
         success: function (products) {
             let content = '';
             for (let i = 0; i < products.length; i++) {
@@ -10,7 +15,7 @@ function getAllProduct() {
         <td>${products[i].name}</td>
         <td>${products[i].price}</td>
         <td>${products[i].description}</td>
-        <td><img src="http://localhost:8080/${products[i].image}"></td>
+        <td><img src="http://localhost:8080/image/${products[i].image}"></td>
         <td>${products[i].category == null ? '' : products[i].category.name}</td>
         <td><button class="btn btn-primary"><i class="fa fa-edit" data-target="#create-product" data-toggle="modal"
                                         type="button" onclick="showEditProduct(${products[i].id})"></i></button></td>
@@ -30,11 +35,11 @@ function createNewProduct() {
     let image = $('#image');
     let category = $('#category').val();
     let product = new FormData();
-    product.append('name',name);
+    product.append('name', name);
     product.append('price', price);
     product.append('description', description);
     product.append('category', category);
-    product.append('image',image.prop('files')[0]);
+    product.append('image', image.prop('files')[0]);
     $.ajax({
         type: 'POST',
         url: 'http://localhost:8080/products',
@@ -42,6 +47,9 @@ function createNewProduct() {
         enctype: 'multipart/form-data',
         processData: false,
         contentType: false,
+        headers: {
+            'Authorization': 'Bearer ' + currentUser.token
+        },
         success: function () {
             getAllProduct();
             showSuccessMessage('Tạo thành công!');
@@ -56,6 +64,9 @@ function deleteProduct(id) {
     $.ajax({
         type: 'DELETE',
         url: `http://localhost:8080/products/${id}`,
+        headers: {
+            'Authorization': 'Bearer ' + currentUser.token
+        },
         success: function () {
             getAllProduct();
             showSuccessMessage('Xóa thành công!');
@@ -83,6 +94,9 @@ function showEditProduct(id) {
     $.ajax({
         type: 'GET',
         url: `http://localhost:8080/products/${id}`,
+        headers: {
+            'Authorization': 'Bearer ' + currentUser.token
+        },
         success: function (product) {
             $('#name').val(product.name);
             $('#price').val(product.price);
@@ -113,7 +127,8 @@ function editProduct(id) {
         data: JSON.stringify(product),
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + currentUser.token
         },
         success: function () {
             showSuccessMessage('Chỉnh sửa thành công!');
@@ -129,6 +144,9 @@ function drawCategory() {
     $.ajax({
         type: 'GET',
         url: 'http://localhost:8080/categories',
+        headers: {
+            'Authorization': 'Bearer ' + currentUser.token
+        },
         success: function (categories) {
             let content = `<option>Chọn danh mục sản phẩm</option>`
             for (let category of categories) {
@@ -140,5 +158,9 @@ function drawCategory() {
 }
 
 $(document).ready(function () {
-    getAllProduct();
+    if (currentUser != null) {
+        getAllProduct();
+    } else {
+        location.href = '/demo-m4-c11G1/pages/auth/login.html'
+    }
 })
